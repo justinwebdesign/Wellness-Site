@@ -1,24 +1,123 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Project</title>
+    <title>Simple Interactive Website</title>
     <link rel="stylesheet" href="styles/style.css">
 </head>
-<body>
-    <header>
-        <h1>Welcome to the Website Project</h1>
+<body style="position: relative; margin: 0; padding: 0;">
+
+    <!-- Border Image -->
+    <img src="images/border.jpg" alt="Decorative Border" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; object-fit: cover;">
+
+    <header style="background: transparent; color: white; padding: 2rem 1rem; text-align: center; margin-top: -80px;">
+        <h1 style="margin: 0; font-size: 36px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Your New Wellness Hub. Search Away.</h1>
     </header>
+
+    <!-- Main Content -->
     <main>
-        <section>
-            <h2>About</h2>
-            <p>This is a sample website created from scratch.</p>
-        </section>
+        <!-- Search Area -->
+        <div id="search-container">
+            <input 
+                type="text" 
+                id="searchBar" 
+                placeholder="Search... (Ex: detox)" 
+                style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ddd; border-radius: 8px;"
+            />
+            <div id="suggestions"></div>
+            <div id="results"></div>
+        </div>
     </main>
-    <footer>
-        <p>&copy; 2023 Website Project</p>
-    </footer>
+
+    <nav style="margin-top: 20px; text-align: center;">
+        <ul style="list-style: none; padding: 0; display: flex; justify-content: center; gap: 2rem;">
+            <!-- Meditation Dropdown -->
+            <li style="position: relative;">
+                <a href="meditation.html" style="text-decoration: none; color: rgb(248, 242, 242); font-weight: bold;">Meditation</a>
+                <ul style="list-style: none; padding: 0; margin: 0; position: absolute; top: 100%; left: 0; background-color: #000; text-align: left;">
+                    <li style="padding: 8px;">
+                        <a href="scenariosmeditation.html" style="text-decoration: none; color: #fff;">Anecdotes</a>
+                    </li>
+                    <li style="padding: 8px;">
+                        <a href="whatismeditation.html" style="text-decoration: none; color: #fff;">What is Meditation?</a>
+                    </li>
+                    <li style="padding: 8px;">
+                        <a href="alternativesmeditation.html" style="text-decoration: none; color: #fff;">Alternatives</a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Nutrition Dropdown -->
+            <li style="position: relative;">
+                <a href="nutrition.html" style="text-decoration: none; color: rgb(249, 246, 246); font-weight: bold;">Nutrition</a>
+                <ul style="list-style: none; padding: 0; margin: 0; position: absolute; top: 100%; left: 0; background-color: #000; text-align: left;">
+                    <li style="padding: 8px;">
+                        <a href="consumenutrition.html" style="text-decoration: none; color: #fff;">Day in the Life</a>
+                    </li>
+                    <li style="padding: 8px;">
+                        <a href="sciencenutrition.html" style="text-decoration: none; color: #fff;">Science and Nutrition</a>
+                    </li>
+                    <li style="padding: 8px;">
+                        <a href="unqiuenutrition.html" style="text-decoration: none; color: #fff;">Diverse Diets</a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Fitness Dropdown -->
+            <li style="position: relative;">
+                <a href="fitness.html" style="text-decoration: none; color: rgb(244, 239, 239); font-weight: bold;">Fitness</a>
+                <ul style="list-style: none; padding: 0; margin: 0; position: absolute; top: 100%; left: 0; background-color: #000; text-align: left;">
+                    <li style="padding: 8px;">
+                        <a href="functionalfitness.html" style="text-decoration: none; color: #fff;">Functionality</a>
+                    </li>
+                    <li style="padding: 8px;">
+                        <a href="heartfitness.html" style="text-decoration: none; color: #fff;">Week in the Life</a>
+                    </li>
+                    <li style="padding: 8px;">
+                        <a href="mentalfitness.html" style="text-decoration: none; color: #fff;">Mental Wellbeing</a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- About Me Dropdown -->
+            <li style="position: relative;">
+                <a href="#" style="text-decoration: none; color: rgb(255, 255, 255); font-weight: bold;">About Me</a>
+                <ul style="list-style: none; padding: 0; margin: 0; position: absolute; top: 100%; left: 0; background-color: #000; text-align: left;">
+                    <li style="padding: 8px;">
+                        <a href="mystory.html" style="text-decoration: none; color: #fff;">
+                            <i class="fas fa-user"></i> My Story
+                        </a>
+                    </li>
+                    <li style="padding: 8px;">
+                        <a href="https://www.tiktok.com/@mindful_livelihood" target="_blank" style="text-decoration: none; color: #fff;">
+                            <i class="fab fa-tiktok"></i> TikTok
+                        </a>
+                    </li>
+                    <li style="padding: 8px;">
+                        <a href="https://www.linkedin.com/in/justin-creamer-5a902b27b/" target="_blank" style="text-decoration: none; color: #fff;">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                    </li>
+                    <li style="padding: 8px;">
+                        <a href="mailto:justincreamer222@gmail.com" style="text-decoration: none; color: #fff;">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <!-- Combined Box -->
+    <section id="combinedSection" style="margin-top: 20px; padding: 10px; background-color: #f2ecec; border: 1px solid #ddd; border-radius: 8px; max-width: 400px; margin: 20px auto; text-align: center;">
+        <a href="all-keywords.html" style="text-decoration: underline; color: #333;">
+            <h2 style="color: #333; font-size: 14px; font-weight: bold; margin-bottom: 5px;">All Keywords</h2>
+        </a>
+        <p style="color: #333; font-size: 12px; line-height: 1.4; margin: 0;">
+            <span style="text-decoration: none; font-weight: bold;">Note:</span> I have selectively curated all input so that all information and advice is data-backed and relevant.
+        </p>
+    </section>
+
     <script src="scripts/main.js"></script>
 </body>
 </html>
