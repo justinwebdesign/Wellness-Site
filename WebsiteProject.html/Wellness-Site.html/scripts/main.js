@@ -1,5 +1,10 @@
 // This file contains the JavaScript code for the website. It handles interactivity and dynamic content on the webpage.
+const http = require('http');
 
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
+  res.end('// Your JavaScript code here', 'utf-8');
+}).listen(8080);
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Website is ready!');
 
