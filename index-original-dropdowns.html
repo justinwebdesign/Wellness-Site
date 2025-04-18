@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wellness Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #2c2c2c;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            font-size: 1em;
+            margin: 20px auto;
+            display: block;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .navbar {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .dropdown {
+            display: inline-block;
+            position: relative;
+        }
+
+        .dropdown a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #444;
+            min-width: 200px;
+            border-radius: 8px;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .keywords-box {
+            text-align: center;
+            background: #eae4de;
+            color: black;
+            border-radius: 10px;
+            padding: 15px;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="typingText"></h1>
+
+    <input type="text" id="searchInput" placeholder="Search... (Ex: detox)">
+    <div id="searchResults"></div>
+
+    <div class="navbar">
+        <div class="dropdown">
+            <a href="#">Meditation</a>
+            <div class="dropdown-content">
+                <a href="#">Anecdotes</a>
+                <a href="#">What is Meditation?</a>
+                <a href="#">Alternatives</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#">Nutrition</a>
+            <div class="dropdown-content">
+                <a href="#">Day in the Life</a>
+                <a href="#">Science and Nutrition</a>
+                <a href="#">Diverse Diets</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#">Fitness</a>
+            <div class="dropdown-content">
+                <a href="#">Functionality</a>
+                <a href="#">Week in the Life</a>
+                <a href="#">Mental Wellbeing</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#">About Me</a>
+            <div class="dropdown-content">
+                <a href="#">My Story</a>
+                <a href="https://www.tiktok.com/" target="_blank">TikTok</a>
+                <a href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
+                <a href="mailto:someone@example.com">Email</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="keywords-box">
+        <p><strong>All Keywords</strong></p>
+        <p><em>Note:</em> I have selectively curated all input so that all information and advice is data-backed and relevant.</p>
+    </div>
+
+    <script>
+        // Typing animation
+        const text = "YOUR WELLNESS HUB. SEARCH AWAY.";
+        const typingTarget = document.getElementById("typingText");
+        let i = 0;
+        function typeEffect() {
+            if (i < text.length) {
+                typingTarget.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeEffect, 100);
+            }
+        }
+        typeEffect();
+    </script>
+
+    <script src="adviceData.js"></script>
+    <script src="logic.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
