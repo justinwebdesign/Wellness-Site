@@ -5,7 +5,114 @@
     <title>Wellness Hub</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-  const adviceData = {
+    // Collect all keywords from adviceData
+    const keywords = Object.keys(adviceData.nutrition)
+        .concat(Object.keys(adviceData.meditation))
+        .concat(Object.keys(adviceData.fitness));
+
+    // Add event listener for input in the search bar
+    searchBar.addEventListener('input', () => {
+        const query = searchBar.value.toLowerCase().trim();
+        suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+        resultsContainer.innerHTML = ''; // Clear previous results
+
+        if (query.length >= 2) { // Show suggestions only if the input has at least 2 characters
+            const filteredSuggestions = [];
+
+            // Search through each category in adviceData
+            Object.keys(adviceData).forEach(category => {
+                // Check if the category matches the query
+                if (category.toLowerCase().startsWith(query)) {
+                    filteredSuggestions.push({ category, keyword: category }); // Add the category itself as a suggestion
+                }
+
+                // Check if any keywords in the category match the query
+                Object.keys(adviceData[category]).forEach(keyword => {
+                    if (keyword.toLowerCase().startsWith(query)) {
+                        filteredSuggestions.push({ category, keyword }); // Add the keyword as a suggestion
+                    }
+                });
+            });
+
+            if (filteredSuggestions.length > 0) {
+                suggestionsContainer.style.display = 'block'; // Show suggestions container
+                filteredSuggestions.forEach(({ category, keyword }) => {
+                    const suggestion = document.createElement('div');
+                    suggestion.textContent = `${keyword} (${category})`; // Display keyword or category with its type
+                    suggestion.style.padding = '8px';
+                    suggestion.style.cursor = 'pointer';
+                    suggestion.style.borderBottom = '1px solid #ddd'; // Add a border for better visibility
+
+                    // Add click event to set the search bar value and trigger the search
+                    suggestion.addEventListener('click', () => {
+                        searchBar.value = keyword; // Set the search bar value to the selected keyword
+                        suggestionsContainer.style.display = 'none'; // Hide suggestions
+                        searchAdvice(keyword); // Trigger the search function with the selected keyword
+                    });
+
+                    suggestionsContainer.appendChild(suggestion);
+                });
+            } else {
+                suggestionsContainer.style.display = 'none'; // Hide suggestions if no matches
+            }
+        } else {
+            suggestionsContainer.style.display = 'none'; // Hide suggestions if input is less than 2 characters
+        }
+
+        // Automatically search when the user types a full keyword
+        const flattenedKeywords = Object.keys(adviceData.nutrition)
+            .concat(Object.keys(adviceData.meditation))
+            .concat(Object.keys(adviceData.fitness));
+        if (flattenedKeywords.includes(query)) {
+            searchAdvice(query); // Trigger the search function if the query matches a keyword
+        }
+    });
+
+    searchBar.addEventListener('input', () => {
+        const query = searchBar.value.trim();
+        if (query) {
+            searchAdvice(query);
+        } else {
+            resultsContainer.style.display = 'none'; // Hide results if input is empty
+        }
+    });
+
+  const searchBar = document.getElementById("searchBar");
+  const suggestions = document.getElementById("suggestions");
+  const results = document.getElementById("results");
+
+  searchBar.addEventListener("input", () => {
+    const query = searchBar.value.toLowerCase().trim();
+    suggestions.innerHTML = "";
+    results.style.display = "none";
+
+    if (query.length < 2) {
+      suggestions.style.display = "none";
+      return;
+    }
+
+    const matches = Object.keys(keywords).filter(keyword =>
+      keyword.toLowerCase().includes(query)
+    );
+
+    if (matches.length > 0) {
+      suggestions.style.display = "block";
+      matches.forEach(keyword => {
+        const item = document.createElement("div");
+        item.textContent = keyword;
+        item.addEventListener("click", () => {
+          results.innerHTML = `<h3>${keyword}</h3><p>${keywords[keyword]}</p>`;
+          results.style.display = "block";
+          suggestions.style.display = "none";
+          searchBar.value = keyword;
+        });
+        suggestions.appendChild(item);
+      });
+    } else {
+      suggestions.style.display = "none";
+    }
+  });
+         const adviceData = {
         nutrition: {
             hydration: "When: Throughout the day, especially after physical activity or in hot weather. For what: Maintaining energy levels, supporting digestion, and preventing dehydration. How to: Set reminders to drink water every hour or use a water-tracking app. Brands: Consider using a reusable water bottle like Hydro Flask or CamelBak to track your intake. Examples: Carry a reusable water bottle, drink herbal teas, or eat water-rich foods like cucumbers and watermelon. How it works: Proper hydration helps regulate body temperature, transport nutrients, and remove waste products from the body.",
             protein: "When: Spread throughout the day, especially after exercise. For what: Repairing and building muscles, supporting immune function, and keeping you full. How to: Include lean meats, beans, tofu, or protein shakes in your meals. Brands: Opt for protein powders like Optimum Nutrition Gold Standard or Vega Protein for plant-based options. Examples: Grilled chicken with quinoa, a post-workout protein smoothie, or lentil soup. How it works: Protein provides amino acids, which are the building blocks for muscle repair and growth.",
@@ -158,117 +265,8 @@
     mobility: "When: During warm-ups or recovery. For what: Improving joint flexibility and range of motion. How to: Perform dynamic stretches or yoga poses targeting specific joints. Steps: Move through a full range of motion and avoid rushing. Examples: Do hip openers, shoulder stretches, or ankle circles. How it works: Mobility exercises enhance movement efficiency and reduce the risk of injuries.",
     stature: "When: Regularly, as part of a fitness routine. For what: Improving posture and alignment. How to: Perform exercises that strengthen the back and core. Steps: Focus on maintaining a neutral spine during movements. Examples: Do planks or rows. How it works: Fitness activities improve posture and overall stature.",
     stretching: "When: Before or after workouts. For what: Enhancing flexibility and reducing muscle tension. How to: Perform static or dynamic stretches. Steps: Hold each stretch for 20-30 seconds and avoid bouncing. Examples: Do hamstring stretches or arm circles. How it works: Stretching improves flexibility and reduces the risk of injury."
-}
-    };
-
-    // Collect all keywords from adviceData
-    const keywords = Object.keys(adviceData.nutrition)
-        .concat(Object.keys(adviceData.meditation))
-        .concat(Object.keys(adviceData.fitness));
-
-    // Add event listener for input in the search bar
-    searchBar.addEventListener('input', () => {
-        const query = searchBar.value.toLowerCase().trim();
-        suggestionsContainer.innerHTML = ''; // Clear previous suggestions
-        resultsContainer.innerHTML = ''; // Clear previous results
-
-        if (query.length >= 2) { // Show suggestions only if the input has at least 2 characters
-            const filteredSuggestions = [];
-
-            // Search through each category in adviceData
-            Object.keys(adviceData).forEach(category => {
-                // Check if the category matches the query
-                if (category.toLowerCase().startsWith(query)) {
-                    filteredSuggestions.push({ category, keyword: category }); // Add the category itself as a suggestion
-                }
-
-                // Check if any keywords in the category match the query
-                Object.keys(adviceData[category]).forEach(keyword => {
-                    if (keyword.toLowerCase().startsWith(query)) {
-                        filteredSuggestions.push({ category, keyword }); // Add the keyword as a suggestion
-                    }
-                });
-            });
-
-            if (filteredSuggestions.length > 0) {
-                suggestionsContainer.style.display = 'block'; // Show suggestions container
-                filteredSuggestions.forEach(({ category, keyword }) => {
-                    const suggestion = document.createElement('div');
-                    suggestion.textContent = `${keyword} (${category})`; // Display keyword or category with its type
-                    suggestion.style.padding = '8px';
-                    suggestion.style.cursor = 'pointer';
-                    suggestion.style.borderBottom = '1px solid #ddd'; // Add a border for better visibility
-
-                    // Add click event to set the search bar value and trigger the search
-                    suggestion.addEventListener('click', () => {
-                        searchBar.value = keyword; // Set the search bar value to the selected keyword
-                        suggestionsContainer.style.display = 'none'; // Hide suggestions
-                        searchAdvice(keyword); // Trigger the search function with the selected keyword
-                    });
-
-                    suggestionsContainer.appendChild(suggestion);
-                });
-            } else {
-                suggestionsContainer.style.display = 'none'; // Hide suggestions if no matches
-            }
-        } else {
-            suggestionsContainer.style.display = 'none'; // Hide suggestions if input is less than 2 characters
-        }
-
-        // Automatically search when the user types a full keyword
-        const flattenedKeywords = Object.keys(adviceData.nutrition)
-            .concat(Object.keys(adviceData.meditation))
-            .concat(Object.keys(adviceData.fitness));
-        if (flattenedKeywords.includes(query)) {
-            searchAdvice(query); // Trigger the search function if the query matches a keyword
-        }
-    });
-
-    searchBar.addEventListener('input', () => {
-        const query = searchBar.value.trim();
-        if (query) {
-            searchAdvice(query);
-        } else {
-            resultsContainer.style.display = 'none'; // Hide results if input is empty
-        }
-    });
-
-  const searchBar = document.getElementById("searchBar");
-  const suggestions = document.getElementById("suggestions");
-  const results = document.getElementById("results");
-
-  searchBar.addEventListener("input", () => {
-    const query = searchBar.value.toLowerCase().trim();
-    suggestions.innerHTML = "";
-    results.style.display = "none";
-
-    if (query.length < 2) {
-      suggestions.style.display = "none";
-      return;
-    }
-
-    const matches = Object.keys(keywords).filter(keyword =>
-      keyword.toLowerCase().includes(query)
-    );
-
-    if (matches.length > 0) {
-      suggestions.style.display = "block";
-      matches.forEach(keyword => {
-        const item = document.createElement("div");
-        item.textContent = keyword;
-        item.addEventListener("click", () => {
-          results.innerHTML = `<h3>${keyword}</h3><p>${keywords[keyword]}</p>`;
-          results.style.display = "block";
-          suggestions.style.display = "none";
-          searchBar.value = keyword;
-        });
-        suggestions.appendChild(item);
-      });
-    } else {
-      suggestions.style.display = "none";
-    }
-  });
-</script>
+ });
+            </script>
     <style>
         body {
             background-color: #2c2c2c;
@@ -294,6 +292,7 @@
   <div id="suggestions"></div>
   <div id="results"></div>
 </div>
+            
         }
         .navbar {
             text-align: center;
