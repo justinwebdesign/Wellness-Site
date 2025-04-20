@@ -14,12 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchBar = document.getElementById('searchBar');
     const resultsContainer = document.getElementById('results');
 
-    // Example data for search functionality
-    const data = {
-        detox: "Detox helps cleanse your body by removing toxins.",
-        meditation: "Meditation improves focus and reduces stress.",
-        fitness: "Fitness activities enhance physical and mental health.",
-    };
 
     // Event listener for search input
     
