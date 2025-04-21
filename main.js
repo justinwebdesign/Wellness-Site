@@ -3,14 +3,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Website is ready!');
 
-    // Add event listener for the "Learn More" button
-    const meditationButton = document.getElementById('meditationbutton');
-    if (meditationButton) {
-        meditationButton.addEventListener('click', () => {
-            showMeditationDetails();
-        });
-    }
-
     const searchBar = document.getElementById('searchBar');
     const resultsContainer = document.getElementById('results');
 
