@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener for search input
     
 
-    const suggestionsContainer = document.getElementById('suggestions');
+    const suggestionsContainer = document.getElementById('adviceData');
 
     // Ensure the required elements exist
     if (!searchBar || !suggestionsContainer || !resultsContainer) {
