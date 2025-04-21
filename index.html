@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-    <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Wellness Hub</title>
@@ -8,92 +7,22 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <input type="text" id="searchBar" placeholder="Type to search..." />
-  <div id="suggestionsContainer"></div>
-  <div id="resultsContainer"></div>
+  <h1>Wellness Hub</h1>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      console.log("Website is ready!");
+  <input
+    type="text"
+    id="searchBar"
+    placeholder="Search topics like 'hydration' or 'yoga'..."
+  />
+  <div id="suggestionsContainer" class="suggestions"></div>
+  <div id="resultsContainer" class="results"></div>
 
-      const searchBar = document.getElementById("searchBar");
-      const suggestionsContainer = document.getElementById("suggestionsContainer");
-      const resultsContainer = document.getElementById("resultsContainer");
-
-      fetch("data.json")
-        .then(response => response.json())
-        .then(adviceData => {
-          const keywords = Object.keys(adviceData.nutrition)
-            .concat(Object.keys(adviceData.meditation))
-            .concat(Object.keys(adviceData.fitness));
-
-          searchBar.addEventListener("input", () => {
-            const query = searchBar.value.toLowerCase().trim();
-            suggestionsContainer.innerHTML = "";
-            resultsContainer.innerHTML = "";
-
-            if (query.length >= 2) {
-              const filteredSuggestions = [];
-
-              Object.keys(adviceData).forEach(category => {
-                if (category.toLowerCase().startsWith(query)) {
-                  filteredSuggestions.push({ category, keyword: category });
-                }
-
-                Object.keys(adviceData[category]).forEach(keyword => {
-                  if (keyword.toLowerCase().startsWith(query)) {
-                    filteredSuggestions.push({ category, keyword });
-                  }
-                });
-              });
-
-              if (filteredSuggestions.length > 0) {
-                suggestionsContainer.style.display = "block";
-
-                filteredSuggestions.forEach(({ category, keyword }) => {
-                  const suggestion = document.createElement("div");
-                  suggestion.textContent = `${keyword} (${category})`;
-                  suggestion.style.padding = "8px";
-                  suggestion.style.cursor = "pointer";
-                  suggestion.style.borderBottom = "1px solid #ddd";
-
-                  suggestion.addEventListener("click", () => {
-                    searchBar.value = keyword;
-                    suggestionsContainer.style.display = "none";
-                    searchAdvice(keyword);
-                  });
-
-                  suggestionsContainer.appendChild(suggestion);
-                });
-              }
-            }
-          });
-
-          function searchAdvice(keyword) {
-            const results = [];
-
-            Object.keys(adviceData).forEach(category => {
-              if (adviceData[category][keyword]) {
-                results.push({
-                  category,
-                  advice: adviceData[category][keyword]
-                });
-              }
-            });
-
-            if (results.length > 0) {
-              results.forEach(({ category, advice }) => {
-                const resultItem = document.createElement("div");
-                resultItem.innerHTML = `<strong>${category}</strong>: ${advice}`;
-                resultItem.style.marginBottom = "10px";
-                resultsContainer.appendChild(resultItem);
-              });
-            }
-          }
-        });
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
+
+         
+                 
+            
         
          
