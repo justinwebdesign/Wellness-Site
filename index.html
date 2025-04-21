@@ -1,127 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+    <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Wellness Hub</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-    <script src="script.js"></script>
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Website is ready!');
-    fetch("data.json")
-  .then(response => response.json())
-  .then(data => {
-    // work with data
-  });
+  <meta charset="UTF-8" />
+  <title>Wellness Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <input type="text" id="searchBar" placeholder="Type to search..." />
+  <div id="suggestionsContainer"></div>
+  <div id="resultsContainer"></div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("Website is ready!");
 
-<link rel="stylesheet" href="style.css" />
-    const keywords = Object.keys(adviceData.nutrition)
-        .concat(Object.keys(adviceData.meditation))
-        .concat(Object.keys(adviceData.fitness));
+      const searchBar = document.getElementById("searchBar");
+      const suggestionsContainer = document.getElementById("suggestionsContainer");
+      const resultsContainer = document.getElementById("resultsContainer");
 
-    // Add event listener for input in the search bar
-    searchBar.addEventListener('input', () => {
-        const query = searchBar.value.toLowerCase().trim();
-        suggestionsContainer.innerHTML = ''; // Clear previous suggestions
-        resultsContainer.innerHTML = ''; // Clear previous results
-
-        if (query.length >= 2) { // Show suggestions only if the input has at least 2 characters
-            const filteredSuggestions = [];
-
-            // Search through each category in adviceData
-            Object.keys(adviceData).forEach(category => {
-                // Check if the category matches the query
-                if (category.toLowerCase().startsWith(query)) {
-                    filteredSuggestions.push({ category, keyword: category }); // Add the category itself as a suggestion
-                }
-
-                // Check if any keywords in the category match the query
-                Object.keys(adviceData[category]).forEach(keyword => {
-                    if (keyword.toLowerCase().startsWith(query)) {
-                        filteredSuggestions.push({ category, keyword }); // Add the keyword as a suggestion
-                    }
-                });
-            });
-
-            if (filteredSuggestions.length > 0) {
-                suggestionsContainer.style.display = 'block'; // Show suggestions container
-                filteredSuggestions.forEach(({ category, keyword }) => {
-                    const suggestion = document.createElement('div');
-                    suggestion.textContent = `${keyword} (${category})`; // Display keyword or category with its type
-                    suggestion.style.padding = '8px';
-                    suggestion.style.cursor = 'pointer';
-                    suggestion.style.borderBottom = '1px solid #ddd'; // Add a border for better visibility
-
-                    // Add click event to set the search bar value and trigger the search
-                    suggestion.addEventListener('click', () => {
-                        searchBar.value = keyword; // Set the search bar value to the selected keyword
-                        suggestionsContainer.style.display = 'none'; // Hide suggestions
-                        searchAdvice(keyword); // Trigger the search function with the selected keyword
-                    });
-
-                    suggestionsContainer.appendChild(suggestion);
-                });
-            } else {
-                suggestionsContainer.style.display = 'none'; // Hide suggestions if no matches
-            }
-        } else {
-            suggestionsContainer.style.display = 'none'; // Hide suggestions if input is less than 2 characters
-        }
-
-        // Automatically search when the user types a full keyword
-        const flattenedKeywords = Object.keys(adviceData.nutrition)
+      fetch("data.json")
+        .then(response => response.json())
+        .then(adviceData => {
+          const keywords = Object.keys(adviceData.nutrition)
             .concat(Object.keys(adviceData.meditation))
             .concat(Object.keys(adviceData.fitness));
-        if (flattenedKeywords.includes(query)) {
-            searchAdvice(query); // Trigger the search function if the query matches a keyword
-        }
-    });
 
-    searchBar.addEventListener('input', () => {
-        const query = searchBar.value.trim();
-        if (query) {
-            searchAdvice(query);
-        } else {
-            resultsContainer.style.display = 'none'; // Hide results if input is empty
-        }
-    });
+          searchBar.addEventListener("input", () => {
+            const query = searchBar.value.toLowerCase().trim();
+            suggestionsContainer.innerHTML = "";
+            resultsContainer.innerHTML = "";
 
-  const searchBar = document.getElementById("searchBar");
-  const suggestions = document.getElementById("suggestions");
-  const results = document.getElementById("results");
+            if (query.length >= 2) {
+              const filteredSuggestions = [];
 
-  searchBar.addEventListener("input", () => {
-    const query = searchBar.value.toLowerCase().trim();
-    suggestions.innerHTML = "";
-    results.style.display = "none";
+              Object.keys(adviceData).forEach(category => {
+                if (category.toLowerCase().startsWith(query)) {
+                  filteredSuggestions.push({ category, keyword: category });
+                }
 
-    if (query.length < 2) {
-      suggestions.style.display = "none";
-      return;
-    }
+                Object.keys(adviceData[category]).forEach(keyword => {
+                  if (keyword.toLowerCase().startsWith(query)) {
+                    filteredSuggestions.push({ category, keyword });
+                  }
+                });
+              });
 
-    const matches = Object.keys(keywords).filter(keyword =>
-      keyword.toLowerCase().includes(query)
-    );
+              if (filteredSuggestions.length > 0) {
+                suggestionsContainer.style.display = "block";
 
-    if (matches.length > 0) {
-      suggestions.style.display = "block";
-      matches.forEach(keyword => {
-        const item = document.createElement("div");
-        item.textContent = keyword;
-        item.addEventListener("click", () => {
-          results.innerHTML = `<h3>${keyword}</h3><p>${keywords[keyword]}</p>`;
-          results.style.display = "block";
-          suggestions.style.display = "none";
-          searchBar.value = keyword;
+                filteredSuggestions.forEach(({ category, keyword }) => {
+                  const suggestion = document.createElement("div");
+                  suggestion.textContent = `${keyword} (${category})`;
+                  suggestion.style.padding = "8px";
+                  suggestion.style.cursor = "pointer";
+                  suggestion.style.borderBottom = "1px solid #ddd";
+
+                  suggestion.addEventListener("click", () => {
+                    searchBar.value = keyword;
+                    suggestionsContainer.style.display = "none";
+                    searchAdvice(keyword);
+                  });
+
+                  suggestionsContainer.appendChild(suggestion);
+                });
+              }
+            }
+          });
+
+          function searchAdvice(keyword) {
+            const results = [];
+
+            Object.keys(adviceData).forEach(category => {
+              if (adviceData[category][keyword]) {
+                results.push({
+                  category,
+                  advice: adviceData[category][keyword]
+                });
+              }
+            });
+
+            if (results.length > 0) {
+              results.forEach(({ category, advice }) => {
+                const resultItem = document.createElement("div");
+                resultItem.innerHTML = `<strong>${category}</strong>: ${advice}`;
+                resultItem.style.marginBottom = "10px";
+                resultsContainer.appendChild(resultItem);
+              });
+            }
+          }
         });
-        suggestions.appendChild(item);
-      });
-    } else {
-      suggestions.style.display = "none";
-    }
-  });
+    });
+  </script>
+</body>
+</html>
          const adviceData = {
         nutrition: {
             hydration: "When: Throughout the day, especially after physical activity or in hot weather. For what: Maintaining energy levels, supporting digestion, and preventing dehydration. How to: Set reminders to drink water every hour or use a water-tracking app. Brands: Consider using a reusable water bottle like Hydro Flask or CamelBak to track your intake. Examples: Carry a reusable water bottle, drink herbal teas, or eat water-rich foods like cucumbers and watermelon. How it works: Proper hydration helps regulate body temperature, transport nutrients, and remove waste products from the body.",
