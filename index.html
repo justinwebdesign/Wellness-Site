@@ -8,6 +8,12 @@
     <script src="script.js"></script>
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Website is ready!');
+    fetch("data.json")
+  .then(response => response.json())
+  .then(data => {
+    // work with data
+  });
+
 
 <link rel="stylesheet" href="style.css" />
     const keywords = Object.keys(adviceData.nutrition)
