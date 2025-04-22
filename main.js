@@ -1,16 +1,41 @@
-// This file contains the JavaScript code for the website. It handles interactivity and dynamic content on the webpage.
-
+const http = require('http');
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
+  res.end('// Your JavaScript code here', 'utf-8');
+}).listen(8080);
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Website is ready!');
+
+    // Add event listener for the "Learn More" button
+    const meditationButton = document.getElementById('meditationbutton');
+    if (meditationButton) {
+        meditationButton.addEventListener('click', () => {
+            showMeditationDetails();
+        });
+    }
 
     const searchBar = document.getElementById('searchBar');
     const resultsContainer = document.getElementById('results');
 
+    // Example data for search functionality
+    const data = {
+        detox: "Detox helps cleanse your body by removing toxins.",
+        meditation: "Meditation improves focus and reduces stress.",
+        fitness: "Fitness activities enhance physical and mental health.",
+    };
 
     // Event listener for search input
-    
+    searchBar.addEventListener('input', () => {
+        const query = searchBar.value.trim().toLowerCase();
+        if (query) {
+            resultsContainer.innerHTML = `<p>Results for "${query}"</p>`;
+            resultsContainer.style.display = 'block'; // Show the results container
+        } else {
+            resultsContainer.style.display = 'none'; // Hide the results container if input is empty
+        }
+    });
 
-    const suggestionsContainer = document.getElementById('adviceData');
+    const suggestionsContainer = document.getElementById('suggestions');
 
     // Ensure the required elements exist
     if (!searchBar || !suggestionsContainer || !resultsContainer) {
@@ -181,7 +206,19 @@ document.addEventListener('DOMContentLoaded', () => {
         .concat(Object.keys(adviceData.fitness));
 
     // Add event listener for input in the search bar
-     // Add the category itself as a suggestion
+    searchBar.addEventListener('input', () => {
+        const query = searchBar.value.toLowerCase().trim();
+        suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+        resultsContainer.innerHTML = ''; // Clear previous results
+
+        if (query.length >= 2) { // Show suggestions only if the input has at least 2 characters
+            const filteredSuggestions = [];
+
+            // Search through each category in adviceData
+            Object.keys(adviceData).forEach(category => {
+                // Check if the category matches the query
+                if (category.toLowerCase().startsWith(query)) {
+                    filteredSuggestions.push({ category, keyword: category }); // Add the category itself as a suggestion
                 }
 
                 // Check if any keywords in the category match the query
@@ -226,7 +263,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    
+    searchBar.addEventListener('input', () => {
+        const query = searchBar.value.trim();
+        if (query) {
+            searchAdvice(query);
+        } else {
+            resultsContainer.style.display = 'none'; // Hide results if input is empty
+        }
+    });
 
     // Function to search and display results
     function searchAdvice(query) {
@@ -351,7 +395,28 @@ function initializeAutocomplete() {
     }));
 
     // Add event listener for input in the search bar
-    
+    searchBar.addEventListener('input', () => {
+        const query = searchBar.value.toLowerCase().trim();
+        suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+
+        if (query.length >= 2) { // Show suggestions only if the input has at least 2 characters
+            // Filter keywords based on the user's input
+            const filteredKeywords = keywordsWithCategories.filter(({ keyword }) =>
+                keyword.startsWith(query)
+            );
+
+            if (filteredKeywords.length > 0) {
+                suggestionsContainer.style.display = 'block'; // Show suggestions container
+                filteredKeywords.forEach(({ keyword, category }) => {
+                    const suggestion = document.createElement('div');
+                    suggestion.innerHTML = `<strong>${keyword}</strong> (${category})`; // Display keyword with its category
+                    suggestion.style.padding = '8px';
+                    suggestion.style.cursor = 'pointer';
+                    suggestion.addEventListener('click', () => {
+                        searchBar.value = keyword; // Set the search bar value to the selected keyword
+                        suggestionsContainer.style.display = 'none'; // Hide suggestions
+                        searchAdvice(keyword); // Pass the selected keyword to the search function
+                    });
                     suggestionsContainer.appendChild(suggestion);
                 });
             } else {
@@ -462,38 +527,3 @@ resultsContainer.style.borderRadius = '8px'; // Rounded corners
 resultsContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)'; // Subtle shadow for a modern look
 resultsContainer.style.marginTop = '10px'; // Add spacing below the search bar
 resultsContainer.style.display = 'block'; // Show the results container
-
-
-
-searchBar.addEventListener('input', () => {
-    const query = searchBar.value.toLowerCase().trim();
-    suggestionsContainer.innerHTML = '';
-    resultsContainer.innerHTML = '';
-    resultsContainer.style.display = 'none';
-
-    if (query.length >= 2) {
-        const flattenedData = flattenAdviceData(adviceData);
-        const filtered = Object.entries(flattenedData).filter(([key]) =>
-            key.toLowerCase().startsWith(query)
-        );
-
-        if (filtered.length > 0) {
-            suggestionsContainer.style.display = 'block';
-            filtered.forEach(([keyword, { category }]) => {
-                const div = document.createElement('div');
-                div.textContent = `${keyword} (${category})`;
-                div.className = 'suggestion-item';
-                div.onclick = () => {
-                    searchBar.value = keyword;
-                    suggestionsContainer.style.display = 'none';
-                    searchAdvice(keyword);
-                };
-                suggestionsContainer.appendChild(div);
-            });
-        } else {
-            suggestionsContainer.style.display = 'none';
-        }
-    } else {
-        suggestionsContainer.style.display = 'none';
-    }
-});
