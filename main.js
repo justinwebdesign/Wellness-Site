@@ -1,6 +1,4 @@
-
-http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
+res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
   res.end('// Your JavaScript code here', 'utf-8');
 }).listen(8080);
 document.addEventListener('DOMContentLoaded', () => {
