@@ -422,6 +422,79 @@ input[type="text"]#searchBar {
     margin-top: 1rem;
     color: #007BFF;
 }
+/* === Custom Styles for Wellness Website === */
+
+/* Style the search bar and results */
+#search-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+#searchBar {
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#suggestions, #results {
+  background: white;
+  border-radius: 8px;
+  margin-top: 10px;
+  padding: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Navigation dropdowns */
+nav ul li ul {
+  display: none;
+  position: absolute;
+  background-color: black;
+  min-width: 160px;
+  z-index: 1000;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+nav ul li:hover ul,
+nav ul li:focus-within ul {
+  display: block;
+}
+
+nav ul li a {
+  display: block;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+/* Responsive nav bar */
+@media screen and (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav ul li {
+    margin-bottom: 1rem;
+  }
+
+  nav ul li ul {
+    position: static;
+    width: 100%;
+  }
+}
+
+/* Combined section */
+#combinedSection {
+  background-color: #fafafa;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
 
 
 
